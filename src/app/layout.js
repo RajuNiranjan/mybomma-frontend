@@ -4,6 +4,7 @@ import { GlobalContextProvider } from "@/context/context";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
 import ShowNavBar from "@/components/showNavBar/showNavBar";
+require("dotenv").config();
 
 const inter = Inter({ subsets: ["latin"] });
 

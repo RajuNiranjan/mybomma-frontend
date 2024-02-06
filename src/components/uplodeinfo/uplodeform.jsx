@@ -1,7 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
-import axios from "axios";
-import { GlobalContext } from "@/context/context";
+import React, { useState } from "react";
 
 const uplodeInputData = [
   {
@@ -59,14 +57,43 @@ const uplodeInputData = [
 ];
 
 const UplodeForm = () => {
-  const {
-    formData,
-    setFormData,
-    commingData,
-    setCommingData,
-    handleChange,
-    handleClieck,
-  } = useContext(GlobalContext);
+  const [formData, setFormData] = useState({
+    image: "",
+    title: "",
+    year: "",
+    zoner: "",
+    cast: "",
+    director: "",
+    trailer: "",
+    synopsis: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+  console.log("fom Data -->", formData);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("form submitted");
+    try {
+      const res = await fetch("http://localhost:8000/api/admin-dashboard", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log("data from DB", data);
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
 
   return (
     <div className="sm:sticky top-0">
@@ -97,15 +124,12 @@ const UplodeForm = () => {
           })}
         </div>
         <button
-          onClick={handleClieck}
+          onClick={handleSubmit}
           type="submit"
           className="bg-blue-500 hover:opacity-85 py-2 rounded-md font-bold text-white tracking-[1px] text-lg my-3">
           Add
         </button>
       </form>
-      {commingData?.map((item, index) => (
-        <p key={index}>{item?.year}</p>
-      ))}
     </div>
   );
 };

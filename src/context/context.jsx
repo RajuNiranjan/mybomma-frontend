@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext();
 
@@ -92,7 +92,25 @@ const singlePost = [
 
 export const GlobalContextProvider = ({ children }) => {
   const [singleMovieData, setSingleMovieData] = useState();
+  const [movies, setMovies] = useState();
 
+  const allMovieData = process.env.ALL_MOVIES_DATA;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://mybomma-backed.onrender.com/api/getAllMovies"
+        );
+        const data = await response.json();
+        setMovies(data); // Assuming the response is an array of movies, adjust accordingly
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -100,6 +118,7 @@ export const GlobalContextProvider = ({ children }) => {
         singlePost,
         singleMovieData,
         setSingleMovieData,
+        movies,
       }}>
       {children}
     </GlobalContext.Provider>

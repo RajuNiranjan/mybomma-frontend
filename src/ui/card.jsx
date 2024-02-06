@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context/context";
 
 const Card = () => {
-  const { singlePost, setSingleMovieData,  } =
-    useContext(GlobalContext);
+  const { singlePost, setSingleMovieData, movies } = useContext(GlobalContext);
 
   const router = useRouter();
 
@@ -18,10 +17,9 @@ const Card = () => {
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 px-5 w-full">
-      {singlePost?.map((item) => (
+      {movies?.data.map((item) => (
         <div key={item?.id}>
-          <div
-           onClick={() => handelNavgateSinglePage(item)}>
+          <div onClick={() => handelNavgateSinglePage(item)}>
             <Image
               className="rounded-lg cursor-pointer"
               src={item?.image}
